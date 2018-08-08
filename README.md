@@ -20,4 +20,4 @@ The navigator nodes is responsible for controlling the setpoints and current pos
 
 
 
-**This is currently a work in progress, it may have a lot of bugs in the current time being.**
+**This is a work in progress, it may have a lot of bugs in the current time being.**
