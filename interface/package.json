@@ -1,20 +1,19 @@
 {
-  "name": "electron-quick-start",
+  "name": "interface",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "The HyDrone tools user interface",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/teixeirarafael/hydrone.git",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "ROS",
+    "GUI",
+    "user interface",
+    "ux"
   ],
-  "author": "GitHub",
+  "author": "Rafael Teixeira",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^2.0.0"
