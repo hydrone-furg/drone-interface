@@ -2,14 +2,59 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<script> require('./scripts/listener.js') </script>
+	<script src="./scripts/listener.js"></script>
+	<script src="./scripts/interface.js"></script>
+	<link rel="stylesheet" href="assets/css/index.css">
 	<title>HyDrone Controller Interface</title>	
 </head>
 <body>
-	<h1>Teste!</h1>
+	<div id="input-div">
+		<table id="input-table" border="0">
+			<tr>
+				<td>
+					x:
+				</td>
+				<td>
+					<input type="text" id="goal_x" name="goal_x" value="0" placeholder="0">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					y:
+				</td>
+				<td>
+					<input type="text" id="goal_y" name="goal_y" value="0" placeholder="0">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					z:
+				</td>
+				<td>
+					<input type="text" id="goal_z" name="goal_z" value="0" placeholder="0">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" id="button-td">
+					<button onclick="publish_goal()">Go</button>
+				</td>
+			</tr>
+			
+		</table>	
+	</div>
+
 	<p id="current_x"></p>
 	<p id="current_y"></p>
 	<p id="current_z"></p>
-	<textarea name="logging" id="logging" cols="30" rows="10"></textarea>
+	--- <br>
+	<p id="setpoint_x"></p>
+	<p id="setpoint_y"></p>
+	<p id="setpoint_z"></p>
+	
+	<div id="logging-area">
+		<textarea name="logging" id="logging" cols="30" rows="10"></textarea><br>
+		<button name="clear_log_btn" id="clear_log_btn" onClick="update_logging(-1,0)">Clear</button>
+	</div>
 </body>
 </html>
+

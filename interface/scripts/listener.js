@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 'use strict';
 
 const rosnodejs = require('rosnodejs');
@@ -7,15 +6,21 @@ const mavros_msgs = rosnodejs.require('mavros_msgs').msg;
 const geometry_msgs = rosnodejs.require('geometry_msgs').msg;
 const rosgraph_msgs = rosnodejs.require('rosgraph_msgs').msg;
 
-var current_x;
-var current_y;
-var current_z;
+var setpoint_request_pub; //declared here for scope reasons
+
 
 function local_position_cb(data){
-	current_x = data.pose.position.x;
-	current_y = data.pose.position.y;
-	current_z = data.pose.position.z;
-	update_local_position();
+	var x = data.pose.position.x;
+	var y = data.pose.position.y;
+	var z = data.pose.position.z;
+	update_position_info(x, y, z);
+}
+
+function setpoint_position_cb(data){
+	var x = data.pose.position.x;
+	var y = data.pose.position.y;
+	var z = data.pose.position.z;
+	update_setpoint_info(x, y, z);
 }
 
 function rosout_cb(data){
@@ -23,39 +28,25 @@ function rosout_cb(data){
 }
 
 function listener(){
-	rosnodejs.initNode('/listener_node').then((nh) => {
+	rosnodejs.initNode('/listener_node', {rosMasterUri: "http://127.0.0.1:11311"}).then((nh) => {
 		let local_position_sub = nh.subscribe('/mavros/local_position/pose', geometry_msgs.PoseStamped, local_position_cb);
-		let rosout_sub = nh.subscribe('/rosout_agg', rosgraph_msgs.Log, rosout_cb);
+		let setpoint_position_sub = nh.subscribe('/mavros/setpoint_position/local', geometry_msgs.PoseStamped, setpoint_position_cb);
+		let rosout_sub = nh.subscribe('/rosout', rosgraph_msgs.Log, rosout_cb);
+
+		setpoint_request_pub = nh.advertise('/hydrone/setpoint_request', geometry_msgs.PoseStamped);
 	});
 }
+function publish_goal(){
+	var goal_x = parseFloat(document.getElementById("goal_x").value);
+	var goal_y = parseFloat(document.getElementById("goal_y").value);
+	var goal_z = parseFloat(document.getElementById("goal_z").value);
 
-function update_local_position(){
-	document.getElementById("current_x").innerText = current_x;
-	document.getElementById("current_y").innerText = current_y;
-	document.getElementById("current_z").innerText = current_z;
-}
+	var goal_msg = new geometry_msgs.PoseStamped;
+	goal_msg.pose.position.x = goal_x;
+	goal_msg.pose.position.y = goal_y;
+	goal_msg.pose.position.z = goal_z;
 
-function update_logging(level, message){
-	var log_level;
-	switch(level){
-		case 1:
-			log_level = "[DEBUG] ";
-			break;
-		case 2:
-			log_level = "[INFO] ";
-			break;
-		case 4:
-			log_level = "[WARN] ";
-			break;
-		case 8:
-			log_level = "[ERROR] ";
-			break;
-		case 16:
-			log_level = "[FATAL] ";
-			break;
-	}
-
-	document.getElementById("logging").value += log_level + message + "\n";
-}
+	setpoint_request_pub.publish(goal_msg);
+};
 
 listener();

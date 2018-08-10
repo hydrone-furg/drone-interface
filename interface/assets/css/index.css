@@ -1,0 +1,12 @@
+#logging-area{
+    padding: 10px;
+}
+
+#logging{
+    resize: none;
+    width: 100%;
+    height: 400px;
+}
+#button-td{
+    text-align: right;
+}
